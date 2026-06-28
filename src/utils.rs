@@ -93,6 +93,146 @@ pub const BLOCK_B_START_OFFSET: u64 = 0x24400;
 pub const BLOCK_B_CHECKSUM_OFFSET: u64 = 0x39BFE; // 2 byte
 
 /*
+    Pokemon data structure offsets
+*/
+pub const PID : usize = 0x0; // 2 bytes 
+pub const POKEMON_CHECKSUM : usize = 0x6; // 2 bytes 
+// Bytes 0x4 and 0x5 are unused
+
+/*
+    Each Pokemon contains 120 bytes of encrypted data 
+    They are organized in blocks of 30 bytes each
+    Offsets are calculated from the beginning of the pokemon file
+*/
+
+//Block A 
+pub const NATIONAL_POKEDEX_ID: usize = 0x08;
+pub const HELD_ITEM: usize           = 0x0A;
+pub const OT_ID: usize               = 0x0C;
+pub const OT_SECRET_ID: usize        = 0x0E;
+pub const EXPERIENCE_POINTS: usize   = 0x10;
+pub const FRIENDSHIP: usize          = 0x14; // If the pokemon is an egg, this value represents the required egg cycles to hatch
+pub const ABILITY: usize             = 0x15;
+pub const MARKINGS: usize            = 0x16;
+pub const ORIGINAL_LANGUAGE: usize   = 0x17;
+pub const HP_EV: usize               = 0x18;
+pub const ATK_EV: usize              = 0x19;
+pub const DEF_EV: usize              = 0x1A;
+pub const SPD_EV: usize              = 0x1B;
+pub const SPATK_EV: usize            = 0x1C;
+pub const SPDEF_EV: usize            = 0x1D;
+pub const COOL_CONTEST_VALUE: usize  = 0x1E;
+pub const BEAUTY_CONTEST_VALUE: usize = 0x1F;
+pub const CUTE_CONTEST_VALUE: usize  = 0x20;
+pub const SMART_CONTEST_VALUE: usize = 0x21;
+pub const TOUGH_CONTEST_VALUE: usize = 0x22;
+pub const SHEEN_CONTEST_VALUE: usize = 0x23;
+pub const SINNOH_RIBBON_SET: usize   = 0x24;
+pub const UNOVA_RIBBON_SET: usize    = 0x26;
+
+//Block B 
+pub const MOVE1_ID: usize               = 0x28;
+pub const MOVE2_ID: usize               = 0x2A;
+pub const MOVE3_ID: usize               = 0x2C;
+pub const MOVE4_ID: usize               = 0x2E;
+pub const MOVE_1_PP: usize              = 0x30;
+pub const MOVE_2_PP: usize              = 0x31;
+pub const MOVE_3_PP: usize              = 0x32;
+pub const MOVE_4_PP: usize              = 0x33;
+pub const MOVE_PP_UPS: usize            = 0x34;
+pub const IV_EGG_NICK: usize            = 0x38;
+pub const HOENN_RIBBON_SET_1: usize     = 0x3C;
+pub const HOENN_RIBBON_SET_2: usize     = 0x3E;
+pub const FORM_BYTE: usize              = 0x40;
+pub const NATURE: usize                 = 0x41;
+pub const DREAM_N: usize                = 0x42;
+
+//IV_EGG_NICK masks 
+/*
+Each IV is 5 bits long
+*/
+pub const HP_IV_SHIFT: u32        = 0;
+pub const ATK_IV_SHIFT: u32       = 5;
+pub const DEF_IV_SHIFT: u32       = 10;
+pub const SPD_IV_SHIFT: u32       = 15;
+pub const SPATK_IV_SHIFT: u32     = 20;
+pub const SPDEF_IV_SHIFT: u32     = 25;
+pub const IS_EGG_SHIFT: u32       = 30;
+pub const IS_NICKNAMED_SHIFT: u32 = 31;
+
+pub const HP_IV_MASK: u32        = 0x1F << HP_IV_SHIFT;
+pub const ATK_IV_MASK: u32       = 0x1F << ATK_IV_SHIFT;
+pub const DEF_IV_MASK: u32       = 0x1F << DEF_IV_SHIFT;
+pub const SPD_IV_MASK: u32       = 0x1F << SPD_IV_SHIFT;
+pub const SPATK_IV_MASK: u32     = 0x1F << SPATK_IV_SHIFT;
+pub const SPDEF_IV_MASK: u32     = 0x1F << SPDEF_IV_SHIFT;
+pub const IS_EGG_MASK: u32       = 1 << IS_EGG_SHIFT;
+pub const IS_NICKNAMED_MASK: u32 = 1 << IS_NICKNAMED_SHIFT; 
+
+//Form byte masks 
+pub const FATEFUL_ENCOUNTER_MASK : usize    = 1 << 0;
+pub const FEMALE_MASK : usize               = 1 << 1;
+pub const GENDERLESS_MASK : usize           = 1 << 2;
+pub const ALTERNATE_FORMS : usize           = 1 << 3;
+
+//Dream N masks
+pub const HAS_DREAM_ABILITY_MASK : usize    = 1 << 0;
+pub const IS_N_POKEMON : usize              = 1 << 1;
+
+//Block C
+pub const NICKNAME: usize             = 0x48;
+pub const UNKNOWN: usize              = 0x5E;
+pub const ORIGIN_GAME: usize          = 0x5F;
+pub const SINNOH_RIBBON_SET_3: usize  = 0x60;
+pub const SINNOH_RIBBON_SET_4: usize  = 0x62;
+
+//Block D
+pub const OT_NAME: usize              = 0x68;
+pub const DATE_EGG_RECEIVED: usize    = 0x78;
+pub const DATE_MET: usize             = 0x7B;
+pub const EGG_LOCATION: usize         = 0x7E;
+pub const MET_AT_LOCATION: usize      = 0x80;
+pub const POKERUS: usize              = 0x82;
+pub const POKE_BALL: usize            = 0x83;
+pub const MET_AT_LEVEL_GENDER: usize  = 0x84;
+pub const ENCOUNTER_TYPE: usize       = 0x85;
+
+pub const MET_LEVEL_MASK: u8          = 0x7F;
+pub const FEMALE_OT_GENDER_MASK: u8   = 1 << 7;
+
+pub const POKERUS_STRAIN_SHIFT: u8 = 4;
+pub const POKERUS_DAYS_SHIFT: u8   = 0;
+
+pub const POKERUS_STRAIN_MASK: u8  = 0x0F << POKERUS_STRAIN_SHIFT;
+pub const POKERUS_DAYS_MASK: u8    = 0x0F << POKERUS_DAYS_SHIFT;
+
+/*
+    Battle stats
+*/
+pub const STATUS_CONDITION: usize     = 0x90;
+pub const LEVEL: usize                = 0x94;
+pub const CAPSULE_INDEX: usize        = 0x95;
+pub const CURRENT_HP: usize           = 0x96;
+pub const MAX_HP: usize               = 0x98;
+pub const ATTACK: usize               = 0x9A;
+pub const DEFENSE: usize              = 0x9C;
+pub const SPEED: usize                = 0x9E;
+pub const SPECIAL_ATTACK: usize       = 0xA0;
+pub const SPECIAL_DEFENSE: usize      = 0xA2;
+pub const MAIL_MESSAGE: usize         = 0xA4;
+
+pub const ASLEEP_SHIFT: u8            = 0;
+pub const ASLEEP_MASK: u8             = 0x07 << ASLEEP_SHIFT;
+
+pub const POISONED_MASK: u8           = 1 << 3;
+pub const BURNED_MASK: u8             = 1 << 4;
+pub const FROZEN_MASK: u8             = 1 << 5;
+pub const PARALYZED_MASK: u8          = 1 << 6;
+pub const TOXIC_MASK: u8              = 1 << 7;
+
+
+
+/*
     Utility definitions
 */
 
@@ -159,3 +299,12 @@ pub fn dump_hex_region(savefile :&mut File, offset:usize, size : usize, mut out 
 
 
 }
+
+/*
+    PRNG implementation
+    Pseudorandom Number Generator
+*/
+
+// pub fn prng(seed : u32) -> u32{
+
+// }
