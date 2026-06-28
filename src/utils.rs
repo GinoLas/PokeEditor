@@ -302,9 +302,10 @@ pub fn dump_hex_region(savefile :&mut File, offset:usize, size : usize, mut out 
 
 /*
     PRNG implementation
-    Pseudorandom Number Generator
+    Meant to be used inside a loop, only return the next value in the pseudo random sequence
+    The value is 32 bit long, and has to be shifted right by 16 bit to extract the upper 16 bits which are the key!
 */
 
-// pub fn prng(seed : u32) -> u32{
-
-// }
+pub fn prng(seed : u32) -> u32{
+    seed.wrapping_mul(0x41C64E6D) + 0x6073
+}
